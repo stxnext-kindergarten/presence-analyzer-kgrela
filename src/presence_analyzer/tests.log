@@ -1,0 +1,21 @@
+.FF
+======================================================================
+FAIL: Test users listing.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kamil/Dokumenty/presence-analyzer-kgrela/src/presence_analyzer/tests.py", line 39, in test_api_users
+    self.assertEqual(resp.status_code, 200)
+AssertionError: 404 != 200
+
+======================================================================
+FAIL: Test main page redirect.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kamil/Dokumenty/presence-analyzer-kgrela/src/presence_analyzer/tests.py", line 33, in test_mainpage
+    self.assertEqual(resp.status_code, 302)
+AssertionError: 404 != 302
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.024s
+
+FAILED (failures=2)
