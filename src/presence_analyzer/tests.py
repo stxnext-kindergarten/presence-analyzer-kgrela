@@ -5,9 +5,11 @@ import json
 import datetime
 import unittest
 
-from presence_analyzer import main
-from presence_analyzer import utils
-from presence_analyzer import views
+from presence_analyzer import (
+    main,
+    utils,
+    views
+    )
 
 
 TEST_DATA_CSV = os.path.join(
