@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Helper functions used in views.
-"""
+"""Helper functions used in views."""
 
 import csv
 from json import dumps
@@ -17,8 +15,8 @@ log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
 def jsonify(function):
-    """
-    Creates a response with the JSON representation of wrapped function result.
+    """Creates a response with the JSON representation of wrapped
+    function result.
     """
     @wraps(function)
     def inner(*args, **kwargs):
@@ -28,8 +26,7 @@ def jsonify(function):
 
 
 def get_data():
-    """
-    Extracts presence data from CSV file and groups it by user_id.
+    """Extracts presence data from CSV file and groups it by user_id.
 
     It creates structure like this:
     data = {
@@ -67,9 +64,7 @@ def get_data():
 
 
 def group_by_weekday(items):
-    """
-    Groups presence entries by weekday.
-    """
+    """Groups presence entries by weekday"""
     result = {i: [] for i in range(7)}
     for date in items:
         start = items[date]['start']
@@ -79,21 +74,17 @@ def group_by_weekday(items):
 
 
 def seconds_since_midnight(time):
-    """
-    Calculates amount of seconds since midnight.
-    """
+    """Calculates amount of seconds since midnight."""
     return time.hour * 3600 + time.minute * 60 + time.second
 
 
 def interval(start, end):
-    """
-    Calculates inverval in seconds between two datetime.time objects.
+    """Calculates inverval in seconds between two datetime.time
+    objects.
     """
     return seconds_since_midnight(end) - seconds_since_midnight(start)
 
 
 def mean(items):
-    """
-    Calculates arithmetic mean. Returns zero for empty lists.
-    """
+    """Calculates arithmetic mean. Returns zero for empty lists."""
     return float(sum(items)) / len(items) if len(items) > 0 else 0

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-"""
-Presence analyzer unit tests.
-"""
+"""Presence analyzer unit tests."""
 import os.path
 import json
 import datetime
 import unittest
 
-from presence_analyzer import main, views, utils
+from presence_analyzer import (
+    main,
+    utils,
+    views
+    )
 
 
 TEST_DATA_CSV = os.path.join(
@@ -17,35 +19,25 @@ TEST_DATA_CSV = os.path.join(
 
 # pylint: disable=E1103
 class PresenceAnalyzerViewsTestCase(unittest.TestCase):
-    """
-    Views tests.
-    """
+    """Views tests."""
 
     def setUp(self):
-        """
-        Before each test, set up a environment.
-        """
+        """Before each test, set up a environment."""
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
         self.client = main.app.test_client()
 
     def tearDown(self):
-        """
-        Get rid of unused objects after each test.
-        """
+        """Get rid of unused objects after each test."""
         pass
 
     def test_mainpage(self):
-        """
-        Test main page redirect.
-        """
+        """Test main page redirect."""
         resp = self.client.get('/')
         self.assertEqual(resp.status_code, 302)
         assert resp.headers['Location'].endswith('/presence_weekday.html')
 
     def test_api_users(self):
-        """
-        Test users listing.
-        """
+        """Test users listing."""
         resp = self.client.get('/api/v1/users')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content_type, 'application/json')
@@ -55,26 +47,18 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
-    """
-    Utility functions tests.
-    """
+    """Utility functions tests."""
 
     def setUp(self):
-        """
-        Before each test, set up a environment.
-        """
+        """Before each test, set up a environment."""
         main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
 
     def tearDown(self):
-        """
-        Get rid of unused objects after each test.
-        """
+        """Get rid of unused objects after each test."""
         pass
 
     def test_get_data(self):
-        """
-        Test parsing of CSV file.
-        """
+        """Test parsing of CSV file."""
         data = utils.get_data()
         self.assertIsInstance(data, dict)
         self.assertItemsEqual(data.keys(), [10, 11])
@@ -86,9 +70,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
 
 
 def suite():
-    """
-    Default test suite.
-    """
+    """Default test suite."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(PresenceAnalyzerViewsTestCase))
     suite.addTest(unittest.makeSuite(PresenceAnalyzerUtilsTestCase))
