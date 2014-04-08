@@ -7,6 +7,7 @@ import unittest
 
 from presence_analyzer import main
 from presence_analyzer import utils
+from presence_analyzer import views
 
 
 TEST_DATA_CSV = os.path.join(
