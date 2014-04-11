@@ -60,7 +60,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
-        self.assertEqual(data[0][1], 24123)
+        self.assertListEqual(data,
+                             [[u'Mon', 24123],
+                              [u'Tue', 16564.0],
+                              [u'Wed', 25321.0],
+                              [u'Thu', 22984.0],
+                              [u'Fri', 6426.0],
+                              [u'Sat', 0],
+                              [u'Sun', 0]
+                              ]
+                             )
 
     def test_mean_time_weekday_view(self):
         """Test view of mean time for user"""
@@ -69,19 +78,35 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
-        self.assertEqual(data[0], [u'Mon', 24123])
-        self.assertEqual(data[1], [u'Tue', 16564])
-        self.assertEqual(data[2], [u'Wed', 25321])
+        self.assertListEqual(data,
+                             [[u'Mon', 24123.0],
+                              [u'Tue', 16564.0],
+                              [u'Wed', 25321.0],
+                              [u'Thu', 22984.0],
+                              [u'Fri', 6426.0],
+                              [u'Sat', 0],
+                              [u'Sun', 0]
+                              ],
+                             )
 
     def test_presence_weekday_view(self):
         """Test pesence """
         result = self.client.get('/api/v1/presence_weekday/11')
         self.assertIsNotNone(result)
         self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
-        self.assertEqual(data[0], [u'Weekday', u'Presence (s)'])
-        self.assertEqual(data[1], [u'Mon', 24123])
-        self.assertEqual(data[2], [u'Tue', 16564])
+        self.assertListEqual(data,
+                             [[u'Weekday', u'Presence (s)'],
+                              [u'Mon', 24123.0],
+                              [u'Tue', 16564.0],
+                              [u'Wed', 25321.0],
+                              [u'Thu', 45968.0],
+                              [u'Fri', 6426.0],
+                              [u'Sat', 0],
+                              [u'Sun', 0]
+                              ],
+                             )
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
@@ -146,8 +171,10 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     def test_mean(self):
         """Test calculates arithmetic mean."""
         self.assertIsNotNone(utils.mean([]))
+        self.assertIsInstance(utils.mean([1, 1.4, 5, 1.3]), float)
         self.assertEqual(utils.mean([1, 2, 3, 4]), 2.5)
         self.assertEqual(utils.mean([-1, -2, 3, 4]), 1)
+        self.assertEqual(utils.mean([1.1, 1.2, 1.3, 1.4]), 1.25)
         self.assertEqual(utils.mean([]), 0)
 
 
