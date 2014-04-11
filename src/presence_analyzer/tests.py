@@ -58,6 +58,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         result = self.client.get('/api/v1/mean_time_weekday/11')
         self.assertIsNotNone(result)
         self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
         self.assertListEqual(data,
@@ -76,6 +77,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         result = self.client.get('/api/v1/mean_time_weekday/11')
         self.assertIsNotNone(result)
         self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
         self.assertListEqual(data,
