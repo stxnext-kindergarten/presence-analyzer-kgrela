@@ -148,11 +148,32 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(len(result), 7)
         self.assertIsInstance(result, dict)
         self.assertIsInstance(result[2], list)
-        self.assertEqual(result[1][0],
-                         utils.interval(data[10][datetime.date(2013, 9, 10)]
-                                        ['start'],
-                                        data[10][datetime.date(2013, 9, 10)]
-                                        ['end']))
+        self.assertDictEqual(result,
+                             {0: [],
+                              1: [utils.interval
+                                  (data[10][datetime.date(2013, 9, 10)]
+                                           ['start'],
+                                   data[10][datetime.date(2013, 9, 10)]
+                                           ['end']
+                                   )],
+                              2: [utils.interval
+                                  (data[10][datetime.date(2013, 9, 11)]
+                                           ['start'],
+                                   data[10][datetime.date(2013, 9, 11)]
+                                           ['end']
+                                   )],
+                              3: [utils.interval
+                                  (data[10][datetime.date(2013, 9, 12)]
+                                           ['start'],
+                                   data[10][datetime.date(2013, 9, 12)]
+                                           ['end']
+                                   )],
+                              4: [],
+                              5: [],
+                              6: [],
+                              }
+                             )
+
         self.assertEqual(len(result[3]), 1)
 
     def test_seconds_since_midnight(self):
