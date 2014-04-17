@@ -53,16 +53,16 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
-        self.assertListEqual(data,
-                             [[u'Mon', 24123],
-                              [u'Tue', 16564.0],
-                              [u'Wed', 25321.0],
-                              [u'Thu', 22984.0],
-                              [u'Fri', 6426.0],
-                              [u'Sat', 0],
-                              [u'Sun', 0]
-                              ]
-                             )
+        self.assertListEqual(data, [
+            [u'Mon', 24123],
+            [u'Tue', 16564.0],
+            [u'Wed', 25321.0],
+            [u'Thu', 22984.0],
+            [u'Fri', 6426.0],
+            [u'Sat', 0],
+            [u'Sun', 0]
+            ]
+            )
 
     def test_mean_time_weekday_view(self):
         """Test view of mean time for user"""
@@ -72,35 +72,35 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
         self.assertIsInstance(data[0], list)
-        self.assertListEqual(data,
-                             [[u'Mon', 24123.0],
-                              [u'Tue', 16564.0],
-                              [u'Wed', 25321.0],
-                              [u'Thu', 22984.0],
-                              [u'Fri', 6426.0],
-                              [u'Sat', 0],
-                              [u'Sun', 0]
-                              ],
-                             )
+        self.assertListEqual(data, [
+            [u'Mon', 24123.0],
+            [u'Tue', 16564.0],
+            [u'Wed', 25321.0],
+            [u'Thu', 22984.0],
+            [u'Fri', 6426.0],
+            [u'Sat', 0],
+            [u'Sun', 0]
+            ],
+            )
 
     def test_presence_weekday_view(self):
-        """Test viwe of weekday time for user"""
+        """Test view of weekday time for user"""
         result = self.client.get('/api/v1/presence_weekday/11')
         self.assertIsNotNone(result)
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
-        self.assertListEqual(data,
-                             [[u'Weekday', u'Presence (s)'],
-                              [u'Mon', 24123.0],
-                              [u'Tue', 16564.0],
-                              [u'Wed', 25321.0],
-                              [u'Thu', 45968.0],
-                              [u'Fri', 6426.0],
-                              [u'Sat', 0],
-                              [u'Sun', 0]
-                              ],
-                             )
+        self.assertListEqual(data, [
+            [u'Weekday', u'Presence (s)'],
+            [u'Mon', 24123.0],
+            [u'Tue', 16564.0],
+            [u'Wed', 25321.0],
+            [u'Thu', 45968.0],
+            [u'Fri', 6426.0],
+            [u'Sat', 0],
+            [u'Sun', 0]
+            ],
+            )
 
     def test_presence_start_end_view(self):
         """Test view of start-end time for user"""
@@ -109,31 +109,32 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
-        self.assertListEqual(data,
-                             [[u'Mon', 33134.0, 57257.0],
-                              [u'Tue', 33590.0, 50154.0],
-                              [u'Wed', 33206.0, 58527.0],
-                              [u'Thu', 35602.0, 58586.0],
-                              [u'Fri', 47816.0, 54242.0],
-                              [u'Sat', 0, 0],
-                              [u'Sun', 0, 0]
-                              ]
-                             )
+        self.assertListEqual(data, [
+            [u'Mon', 33134.0, 57257.0],
+            [u'Tue', 33590.0, 50154.0],
+            [u'Wed', 33206.0, 58527.0],
+            [u'Thu', 35602.0, 58586.0],
+            [u'Fri', 47816.0, 54242.0],
+            [u'Sat', 0, 0],
+            [u'Sun', 0, 0]
+            ]
+            )
+
         result = self.client.get('/api/v1/presence_start_end/10')
         self.assertIsNotNone(result)
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, 'application/json')
         data = json.loads(result.data)
-        self.assertListEqual(data,
-                             [[u'Mon', 0, 0],
-                              [u'Tue', 34745.0, 64792.0],
-                              [u'Wed', 33592.0, 58057.0],
-                              [u'Thu', 38926.0, 62631.0],
-                              [u'Fri', 0, 0],
-                              [u'Sat', 0, 0],
-                              [u'Sun', 0, 0]
-                              ]
-                             )
+        self.assertListEqual(data, [
+            [u'Mon', 0, 0],
+            [u'Tue', 34745.0, 64792.0],
+            [u'Wed', 33592.0, 58057.0],
+            [u'Thu', 38926.0, 62631.0],
+            [u'Fri', 0, 0],
+            [u'Sat', 0, 0],
+            [u'Sun', 0, 0]
+            ]
+            )
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
@@ -165,31 +166,28 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(len(result), 7)
         self.assertIsInstance(result, dict)
         self.assertIsInstance(result[2], list)
-        self.assertDictEqual(result,
-                             {0: [],
-                              1: [utils.interval
-                                  (data[10][datetime.date(2013, 9, 10)]
-                                           ['start'],
-                                   data[10][datetime.date(2013, 9, 10)]
-                                           ['end']
-                                   )],
-                              2: [utils.interval
-                                  (data[10][datetime.date(2013, 9, 11)]
-                                           ['start'],
-                                   data[10][datetime.date(2013, 9, 11)]
-                                           ['end']
-                                   )],
-                              3: [utils.interval
-                                  (data[10][datetime.date(2013, 9, 12)]
-                                           ['start'],
-                                   data[10][datetime.date(2013, 9, 12)]
-                                           ['end']
-                                   )],
-                              4: [],
-                              5: [],
-                              6: [],
-                              }
-                             )
+        self.assertDictEqual(result, {
+            0: [],
+            1: [utils.interval
+                (data[10][datetime.date(2013, 9, 10)]['start'],
+                 data[10][datetime.date(2013, 9, 10)]['end']
+                 )
+                ],
+            2: [utils.interval
+                (data[10][datetime.date(2013, 9, 11)]['start'],
+                 data[10][datetime.date(2013, 9, 11)]['end']
+                 )
+                ],
+            3: [utils.interval
+                (data[10][datetime.date(2013, 9, 12)]['start'],
+                 data[10][datetime.date(2013, 9, 12)]['end']
+                 )
+                ],
+            4: [],
+            5: [],
+            6: [],
+            }
+            )
 
         self.assertEqual(len(result[3]), 1)
 
@@ -199,29 +197,33 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsNotNone(data)
         result = utils.group_by_start_end(data[11])
         self.assertIsNotNone(result)
-        self.assertDictEqual(result,
-                             {0: {'start': [33134], 'end': [57257]},
-                              1: {'start': [33590], 'end': [50154]},
-                              2: {'start': [33206], 'end': [58527]},
-                              3: {'start': [37116, 34088],
-                                  'end': [60085, 57087]},
-                              4: {'start': [47816], 'end': [54242]},
-                              5: {'start': [], 'end': []},
-                              6: {'start': [], 'end': []}
-                              }
-                             )
+        self.assertIsInstance(data, dict)
+        self.assertEqual(len(result), 7)
+        self.assertDictEqual(result, {
+            0: {'start': [33134], 'end': [57257]},
+            1: {'start': [33590], 'end': [50154]},
+            2: {'start': [33206], 'end': [58527]},
+            3: {'start': [37116, 34088], 'end': [60085, 57087]},
+            4: {'start': [47816], 'end': [54242]},
+            5: {'start': [], 'end': []},
+            6: {'start': [], 'end': []}
+            }
+            )
+
         result = utils.group_by_start_end(data[10])
         self.assertIsNotNone(result)
-        self.assertDictEqual(result,
-                             {0: {'start': [], 'end': []},
-                              1: {'start': [34745], 'end': [64792]},
-                              2: {'start': [33592], 'end': [58057]},
-                              3: {'start': [38926], 'end': [62631]},
-                              4: {'start': [], 'end': []},
-                              5: {'start': [], 'end': []},
-                              6: {'start': [], 'end': []}
-                              }
-                             )
+        self.assertIsInstance(data, dict)
+        self.assertEqual(len(result), 7)
+        self.assertDictEqual(result, {
+            0: {'start': [], 'end': []},
+            1: {'start': [34745], 'end': [64792]},
+            2: {'start': [33592], 'end': [58057]},
+            3: {'start': [38926], 'end': [62631]},
+            4: {'start': [], 'end': []},
+            5: {'start': [], 'end': []},
+            6: {'start': [], 'end': []}
+            }
+            )
 
     def test_seconds_since_midnight(self):
         """Test calculated amount of seconds since midnight"""
