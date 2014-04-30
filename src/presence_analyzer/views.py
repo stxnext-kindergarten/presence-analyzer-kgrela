@@ -2,7 +2,7 @@
 """Defines views."""
 
 import calendar
-from flask import redirect
+from flask import render_template
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (
@@ -18,9 +18,10 @@ log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
 @app.route('/')
-def mainpage():
+@app.route('/<template_name>')
+def mainpage(template_name="presence_weekday.html"):
     """Redirects to front page."""
-    return redirect('/static/presence_weekday.html')
+    return render_template(template_name)
 
 
 @app.route('/api/v1/users', methods=['GET'])

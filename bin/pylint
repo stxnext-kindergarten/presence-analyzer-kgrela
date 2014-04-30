@@ -1,0 +1,22 @@
+#!/opt/python/2.7/bin/python
+
+
+import sys
+sys.path[0:0] = [
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/pylint-1.1.0-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/src',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/Flask-0.10.1-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/setuptools-3.4.4-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/astroid-1.0.1-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/logilab_common-0.61.0-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/itsdangerous-0.24-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/Jinja2-2.7.2-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/Werkzeug-0.9.4-py2.7.egg',
+  '/home/kamil/Dokumenty/presence-analyzer-kgrela/eggs/MarkupSafe-0.21-py2.7-linux-x86_64.egg',
+  ]
+
+sys.argv.extend(['/home/kamil/Dokumenty/presence-analyzer-kgrela/src/presence_analyzer'])
+
+
+from pylint import run_pylint
+run_pylint()
