@@ -136,6 +136,19 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             ]
             )
 
+    def test_template_render(self):
+        """Test template rendering"""
+        url_list = [
+            '/presence_weekday.html',
+            '/presence_start_end',
+            '/mean_time_weekday'
+        ]
+        for url in url_list:
+            result = self.client.get(url)
+            self.assertIsNotNone(result)
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """Utility functions tests."""

@@ -2,15 +2,19 @@
 """Defines views."""
 
 import calendar
-from flask import render_template
-
+from flask import (
+    render_template,
+    url_for,
+    redirect,
+)
+from jinja2 import TemplateNotFound
 from presence_analyzer.main import app
 from presence_analyzer.utils import (
     jsonify,
     get_data,
     mean,
     group_by_weekday,
-    group_by_start_end
+    group_by_start_end,
 )
 
 import logging
@@ -18,10 +22,11 @@ log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
 
 @app.route('/')
-@app.route('/<template_name>')
-def mainpage(template_name="presence_weekday.html"):
+def mainpage():
     """Redirects to front page."""
-    return render_template(template_name)
+    return redirect(
+        url_for('template_render', template_name="presence_weekday.html")
+        )
 
 
 @app.route('/api/v1/users', methods=['GET'])
@@ -81,3 +86,12 @@ def presence_start_end_view(user_id):
         for weekday, times in weekdays.items()
         ]
     return result
+
+
+@app.route('/<template_name>')
+def template_render(template_name):
+    """Create HTML document from template"""
+    try:
+        return render_template(template_name)
+    except TemplateNotFound:
+        return "404 page not found"
