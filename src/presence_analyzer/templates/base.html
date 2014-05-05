@@ -1,10 +1,10 @@
+<!doctype html>
 {% set navigation_bar = [
     ('/presence_weekday.html', 'presence_weekday', 'Presence by weekday'),
     ('/mean_time_weekday.html', 'mean_time_weekday', 'Presence mean time' ),
     ('/presence_start_end.html', 'presence_start_end', 'Presence start-end')
 ] -%}
 {% set active_page = active_page|default('presence_weekday') -%}
-<!doctype html>
 <html lang=en>
 {% block head -%}
 <head>
@@ -28,9 +28,9 @@
         <div id="header">
             <h1>{{title}}</h1>
             <ul>
-            	{% for href, id, caption in navigation_bar -%}
-            		<li{% if id == active_page %} id="selected"{% endif %}><a href="{{href|e}}">{{caption}}</a></li> 
-            	{% endfor -%}
+                {% for href, id, caption in navigation_bar -%}
+                <li{% if id == active_page %} id="selected"{% endif %}><a href="{{href|e}}">{{caption}}</a></li> 
+                {% endfor -%}
             </ul>
         </div>
         <div id="content">

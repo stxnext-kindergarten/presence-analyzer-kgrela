@@ -138,16 +138,17 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
 
     def test_template_render(self):
         """Test template rendering"""
-        url_list = [
-            '/presence_weekday.html',
-            '/presence_start_end',
-            '/mean_time_weekday'
+        data_list = [
+            ('/presence_weekday.html', 'Presence by weekday'),
+            ('/mean_time_weekday.html', 'Presence mean time by weekday'),
+            ('/presence_start_end.html', 'Presence start-end weekday'),
         ]
-        for url in url_list:
-            result = self.client.get(url)
+        for data in data_list:
+            result = self.client.get(data[0])
             self.assertIsNotNone(result)
             self.assertEqual(result.status_code, 200)
             self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+            self.assertIn(data[1], result.data)
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
