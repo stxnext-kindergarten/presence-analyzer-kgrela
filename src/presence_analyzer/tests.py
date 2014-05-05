@@ -136,6 +136,27 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             ]
             )
 
+    def test_template_render_presence_weekday(self):
+        result = self.client.get("/presence_weekday.html")
+        self.assertIsNotNone(result)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+        self.assertIn('Presence by weekday', result.data)
+
+    def test_template_render_mean_time_weekday(self):
+        result = self.client.get("/mean_time_weekday.html")
+        self.assertIsNotNone(result)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+        self.assertIn('Presence mean time by weekday', result.data)
+
+    def test_template_render_presence_start_end(self):
+        result = self.client.get('/presence_start_end.html')
+        self.assertIsNotNone(result)
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+        self.assertIn('Presence start-end weekday', result.data)
+
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """Utility functions tests."""
