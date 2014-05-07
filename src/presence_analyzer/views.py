@@ -6,10 +6,8 @@ from flask import (
     url_for,
     redirect,
 )
-from flask.ext.mako import (
-    render_template,
-    TemplateError,
-)
+from flask.ext.mako import render_template
+from mako.exceptions import TopLevelLookupException
 
 from presence_analyzer.main import app
 from presence_analyzer.utils import (
@@ -22,6 +20,12 @@ from presence_analyzer.utils import (
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
+
+TEMPLATE_LIST = (
+    'presence_weekday.html',
+    'mean_time_weekday.html',
+    'presence_start_end.html'
+)
 
 
 @app.route('/')
@@ -94,15 +98,10 @@ def presence_start_end_view(user_id):
 @app.route('/<template_name>')
 def template_render(template_name):
     """Create HTML document from template"""
-    allowed_pages_list = [
-        "presence_weekday.html",
-        "mean_time_weekday.html",
-        "presence_start_end.html"
-    ]
-    if template_name in allowed_pages_list:
-        try:
+    try:
+        if template_name in TEMPLATE_LIST:
             return render_template(template_name)
-        except TemplateError:
-            return "500", 500
-    else:
+        else:
+            raise TopLevelLookupException
+    except TopLevelLookupException:
         return "404", 404
