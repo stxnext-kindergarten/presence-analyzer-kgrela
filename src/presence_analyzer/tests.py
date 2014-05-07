@@ -11,7 +11,6 @@ from presence_analyzer import (
     utils
     )
 
-
 TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
 )
@@ -136,26 +135,36 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             ]
             )
 
-    def test_template_render_presence_weekday(self):
-        result = self.client.get("/presence_weekday.html")
-        self.assertIsNotNone(result)
-        self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
-        self.assertIn('Presence by weekday', result.data)
+    def test_template_render(self):
+        """Test rendering templates"""
+        data_list = [
+            {'url': "/presence_weekday.html",
+             "unique": "Presence by weekday"
+             },
+            {'url': "/mean_time_weekday.html",
+             "unique": "Presence mean time by weekday"
+             },
+            {'url': "/presence_start_end.html",
+             "unique": "Presence start-end weekday"}
+        ]
+        for data in data_list:
+            result = self.client.get(data['url'])
+            self.assertIsNotNone(result)
+            self.assertEqual(result.status_code, 200)
+            self.assertEqual(result.content_type, 'text/html; charset=utf-8')
+            self.assertIn(data['unique'], result.data)
 
-    def test_template_render_mean_time_weekday(self):
-        result = self.client.get("/mean_time_weekday.html")
-        self.assertIsNotNone(result)
-        self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
-        self.assertIn('Presence mean time by weekday', result.data)
-
-    def test_template_render_presence_start_end(self):
-        result = self.client.get('/presence_start_end.html')
-        self.assertIsNotNone(result)
-        self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.content_type, 'text/html; charset=utf-8')
-        self.assertIn('Presence start-end weekday', result.data)
+    def test_template_render_secon(self):
+        """Second testing function simulating real tests
+        Especially for you
+        """
+        wrong_data = [
+            {'url': "/basic.html", "code": 404},
+            {'url': "/not_existing.html", "code": 404}
+        ]
+        for data in wrong_data:
+            result = self.client.get(data['url'])
+            self.assertEqual(result.status_code, data['code'])
 
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):

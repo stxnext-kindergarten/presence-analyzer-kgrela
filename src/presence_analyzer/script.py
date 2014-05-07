@@ -80,6 +80,7 @@ def _serve(action, debug=False, dry_run=False):
 
 # bin/flask-ctl ...
 def run():
+    """Run command"""
     action_shell = werkzeug.script.make_shell(make_shell, make_shell.__doc__)
 
     # bin/flask-ctl serve [fg|start|stop|restart|status]

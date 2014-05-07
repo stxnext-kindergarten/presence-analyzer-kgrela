@@ -3,11 +3,13 @@
 
 import calendar
 from flask import (
-    render_template,
     url_for,
     redirect,
 )
-from jinja2 import TemplateNotFound
+from flask.ext.mako import (
+    render_template,
+)
+
 from presence_analyzer.main import app
 from presence_analyzer.utils import (
     jsonify,
@@ -91,7 +93,15 @@ def presence_start_end_view(user_id):
 @app.route('/<template_name>')
 def template_render(template_name):
     """Create HTML document from template"""
-    try:
-        return render_template(template_name)
-    except TemplateNotFound:
-        return "404 page not found"
+    allowed_pages_list = [
+        "presence_weekday.html",
+        "mean_time_weekday.html",
+        "presence_start_end.html"
+    ]
+    if template_name in allowed_pages_list:
+        try:
+            return render_template(template_name)
+        except:
+            return "500", 500
+    else:
+        return "404", 404
