@@ -8,6 +8,7 @@ from flask import (
 )
 from flask.ext.mako import (
     render_template,
+    TemplateError,
 )
 
 from presence_analyzer.main import app
@@ -101,7 +102,7 @@ def template_render(template_name):
     if template_name in allowed_pages_list:
         try:
             return render_template(template_name)
-        except:
+        except TemplateError:
             return "500", 500
     else:
         return "404", 404
