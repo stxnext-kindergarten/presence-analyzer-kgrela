@@ -20,15 +20,22 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+
                     if(selected_user) {
+                        document.images['avatar'].style.display="none";
                         loading.show();
                         chart_div.hide();
                         $.getJSON("${url_for('presence_weekday_view', user_id='0')}"+selected_user, function(result) {
+                            $.getJSON("${url_for('users_avatar', user_id="0")}"+selected_user, function(result){
+                                document.images['avatar'].src=result;
+                            });
                             var data = google.visualization.arrayToDataTable(result);
                             var options = {};
                             chart_div.show();
+
                             loading.hide();
                             var chart = new google.visualization.PieChart(chart_div[0]);
+                            document.images['avatar'].style.display="inline";
                             chart.draw(data, options);
                         });
                     }

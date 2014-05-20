@@ -16,6 +16,7 @@ from presence_analyzer.utils import (
     mean,
     group_by_weekday,
     group_by_start_end,
+    get_users_data,
 )
 
 import logging
@@ -40,9 +41,14 @@ def mainpage():
 @jsonify
 def users_view():
     """Users listing for dropdown."""
-    data = get_data()
-    return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+    data = get_users_data()
+    return [
+        {'user_id': user,
+         'name': user_data["name"],
+         'avatar': user_data["avatar"]
+         }
+        for user, user_data in data.iteritems()
+    ]
 
 
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
@@ -95,7 +101,7 @@ def presence_start_end_view(user_id):
     return result
 
 
-@app.route('/<template_name>')
+@app.route('/<template_name>', methods=['GET'])
 def template_render(template_name):
     """Create HTML document from template"""
     try:
@@ -105,3 +111,14 @@ def template_render(template_name):
             raise TopLevelLookupException
     except TopLevelLookupException:
         return "404", 404
+
+
+@app.route('/api/v1/users_avatar/<int:user_id>', methods=['GET'])
+@jsonify
+def users_avatar(user_id):
+    """Returns avatar address for given user"""
+    data = get_users_data()
+    if str(user_id) not in data:
+        log.debug('User {0} not found!'.format(user_id))
+        return None
+    return data[str(user_id)]['avatar']

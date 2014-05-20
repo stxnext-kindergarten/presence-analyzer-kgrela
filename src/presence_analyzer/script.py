@@ -50,6 +50,15 @@ def make_shell():
     return locals()
 
 
+# bin/flask-ctl update
+def make_update(dry_run=False):
+    """Update server data."""
+    from presence_analyzer.main import app
+    from presence_analyzer.utils import update_xml
+    app.config.from_pyfile(abspath(DEPLOY_CFG))
+    return update_xml()
+
+
 def _serve(action, debug=False, dry_run=False):
     """Build paster command from 'action' and 'debug' flag."""
     if debug:

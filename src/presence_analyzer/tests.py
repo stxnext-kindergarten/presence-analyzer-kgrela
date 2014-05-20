@@ -8,11 +8,15 @@ import unittest
 from presence_analyzer import (
     main,
     views,
-    utils
+    utils,
     )
 
 TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
+)
+
+TEST_DATA_XML = os.path.join(
+    os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.xml'
 )
 
 
@@ -22,7 +26,10 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
 
     def setUp(self):
         """Before each test, set up a environment."""
-        main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({
+            'DATA_CSV': TEST_DATA_CSV,
+            'DATA_XML': TEST_DATA_XML,
+            })
         self.client = main.app.test_client()
 
     def tearDown(self):
@@ -42,7 +49,18 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         self.assertEqual(resp.content_type, 'application/json')
         data = json.loads(resp.data)
         self.assertEqual(len(data), 2)
-        self.assertDictEqual(data[0], {u'user_id': 10, u'name': u'User 10'})
+        self.assertListEqual(data, [
+            {
+                u'avatar': u'https://intranet.stxnext.pl/api/images/users/151',
+                u'name': u'Not F.',
+                u'user_id': u'11'
+            }, {
+                u'avatar': u'https://intranet.stxnext.pl/api/images/users/165',
+                u'name': u'Rando M.',
+                u'user_id': u'10'
+            }
+            ]
+        )
 
     def test_users_view(self):
         """Test user view"""
@@ -138,14 +156,15 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
     def test_template_render(self):
         """Test rendering templates"""
         data_list = [
-            {'url': "/presence_weekday.html",
-             "unique": "Presence by weekday"
-             },
-            {'url': "/mean_time_weekday.html",
-             "unique": "Presence mean time by weekday"
-             },
-            {'url': "/presence_start_end.html",
-             "unique": "Presence start-end weekday"}
+            {
+                'url': "/presence_weekday.html",
+                "unique": "Presence by weekday"
+            }, {
+                'url': "/mean_time_weekday.html",
+                "unique": "Presence mean time by weekday"
+            }, {
+                'url': "/presence_start_end.html",
+                "unique": "Presence start-end weekday"}
         ]
         for data in data_list:
             result = self.client.get(data['url'])
@@ -166,13 +185,31 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             result = self.client.get(data['url'])
             self.assertEqual(result.status_code, data['code'])
 
+    def test_users_avatar(self):
+        """Test returned avatar of given user"""
+        for data in [
+            {
+                "address": "/api/v1/users_avatar/10",
+                "avatar": '"https://intranet.stxnext.pl/api/images/users/165"'
+            }, {
+                "address": "/api/v1/users_avatar/11",
+                "avatar": '"https://intranet.stxnext.pl/api/images/users/151"'
+            }
+        ]:
+            response = self.client.get(data["address"])
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.data, data["avatar"])
+
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """Utility functions tests."""
 
     def setUp(self):
         """Before each test, set up a environment."""
-        main.app.config.update({'DATA_CSV': TEST_DATA_CSV})
+        main.app.config.update({
+            'DATA_CSV': TEST_DATA_CSV,
+            'DATA_XML': TEST_DATA_XML,
+            })
 
     def tearDown(self):
         """Get rid of unused objects after each test."""
@@ -278,6 +315,21 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(utils.mean([-1, -2, 3, 4]), 1)
         self.assertEqual(utils.mean([1.1, 1.2, 1.3, 1.4]), 1.25)
         self.assertEqual(utils.mean([]), 0)
+
+    def test_get_users_data(self):
+        """Test returned data from xml"""
+        data = utils.get_users_data()
+        self.assertDictEqual(data, {
+            '10': {
+                u'avatar': u'https://intranet.stxnext.pl/api/images/users/165',
+                u'name': 'Rando M.'
+                },
+            '11': {
+                u'avatar': u'https://intranet.stxnext.pl/api/images/users/151',
+                u'name': 'Not F.'
+                }
+            }
+        )
 
 
 def suite():

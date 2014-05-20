@@ -7,6 +7,7 @@ from functools import wraps
 from datetime import datetime
 
 from flask import Response
+from lxml import etree
 
 from presence_analyzer.main import app
 
@@ -100,3 +101,32 @@ def interval(start, end):
 def mean(items):
     """Calculates arithmetic mean. Returns zero for empty lists."""
     return float(sum(items)) / len(items) if len(items) > 0 else 0
+
+
+def get_users_data():
+    """Returns users data. Their id, name and avatar address."""
+    with open(app.config['DATA_XML'], 'r') as xmlfile:
+        data = etree.parse(xmlfile)
+    root = data.getroot()
+    config = root[0]
+    server = {
+        u"protocol": unicode(config.findtext(u'protocol')),
+        u"host": unicode(config.findtext('host'))
+    }
+    address = server['protocol'] + "://" + server[u'host']
+    return {user.get("id"): {
+        u"name": user.findtext(u"name"),
+        u"avatar": address+user.findtext(u"avatar")
+        }
+        for user in root[1]
+    }
+
+
+def update_xml():
+    """Update the server"""
+    from urllib import urlretrieve
+
+    return urlretrieve(
+        app.config['DATA_SERVER_ADDRESS'],
+        app.config['DATA_XML']
+    )
