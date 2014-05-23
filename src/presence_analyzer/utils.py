@@ -110,13 +110,13 @@ def get_users_data():
     root = data.getroot()
     config = root[0]
     server = {
-        u"protocol": unicode(config.findtext(u'protocol')),
-        u"host": unicode(config.findtext('host'))
+        u'protocol': unicode(config.findtext(u'protocol')),
+        u'host': unicode(config.findtext('host'))
     }
-    address = server['protocol'] + "://" + server[u'host']
-    return {user.get("id"): {
-        u"name": user.findtext(u"name"),
-        u"avatar": address+user.findtext(u"avatar")
+    address = '{0}://{1}'.format(server['protocol'], server[u'host'])
+    return {user.get('id'): {
+        u'name': user.findtext(u'name'),
+        u'avatar': address+user.findtext(u'avatar')
         }
         for user in root[1]
     }

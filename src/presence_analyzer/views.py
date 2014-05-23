@@ -42,13 +42,14 @@ def mainpage():
 def users_view():
     """Users listing for dropdown."""
     data = get_users_data()
-    return [
-        {'user_id': user,
-         'name': user_data["name"],
-         'avatar': user_data["avatar"]
-         }
-        for user, user_data in data.iteritems()
-    ]
+    result = [{
+        'user_id': user,
+        'name': user_data['name'],
+        'avatar': user_data['avatar']
+        }
+        for user, user_data in data.iteritems()]
+
+    return result
 
 
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
@@ -96,8 +97,8 @@ def presence_start_end_view(user_id):
     weekdays = group_by_start_end(data[user_id])
     result = [
         (calendar.day_abbr[weekday], mean(times['start']), mean(times['end']))
-        for weekday, times in weekdays.items()
-        ]
+        for weekday, times in weekdays.items()]
+
     return result
 
 
