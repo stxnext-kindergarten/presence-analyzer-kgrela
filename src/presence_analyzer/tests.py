@@ -185,21 +185,6 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             result = self.client.get(data['url'])
             self.assertEqual(result.status_code, data['code'])
 
-    def test_users_avatar(self):
-        """Test returned avatar of given user"""
-        for data in [
-            {
-                "address": "/api/v1/users_avatar/10",
-                "avatar": '"https://intranet.stxnext.pl/api/images/users/165"'
-            }, {
-                "address": "/api/v1/users_avatar/11",
-                "avatar": '"https://intranet.stxnext.pl/api/images/users/151"'
-            }
-        ]:
-            response = self.client.get(data["address"])
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.data, data["avatar"])
-
 
 class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
     """Utility functions tests."""

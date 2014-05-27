@@ -112,14 +112,3 @@ def template_render(template_name):
             raise TopLevelLookupException
     except TopLevelLookupException:
         return "404", 404
-
-
-@app.route('/api/v1/users_avatar/<int:user_id>', methods=['GET'])
-@jsonify
-def users_avatar(user_id):
-    """Returns avatar address for given user"""
-    data = get_users_data()
-    if str(user_id) not in data:
-        log.debug('User {0} not found!'.format(user_id))
-        return None
-    return data[str(user_id)]['avatar']

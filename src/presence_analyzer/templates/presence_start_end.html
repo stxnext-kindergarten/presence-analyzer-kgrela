@@ -8,10 +8,12 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
+                var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
+                        users[this.user_id] = this.avatar;
                     });
                     dropdown.show();
                     loading.hide();
@@ -19,14 +21,15 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+                    var avatar_div = $("#avatar_div");
                     if(selected_user) {
                         document.images['avatar'].style.display="none";
                         loading.show();
                         chart_div.hide();
+                        avatar_div.hide();
+                        $("#avatar").attr("src", users[selected_user]);
                         $.getJSON("${ url_for("presence_start_end_view", user_id="0") }" + selected_user, function(result) {
-                            $.getJSON("${url_for('users_avatar', user_id="0")}"+selected_user, function(result){
-                                document.images['avatar'].src=result;
-                            });
+                            document.images['avatar'].src= users[selected_user];
 
                             $.each(result, function(index, value) {
                                 value[1] = parseInterval(value[1]);
@@ -49,6 +52,7 @@
                             var chart = new google.visualization.Timeline(chart_div[0]);
                             document.images['avatar'].style.display="inline";
                             chart.draw(data, options);
+                            avatar_div.show();
                         });
                     }
                 });
