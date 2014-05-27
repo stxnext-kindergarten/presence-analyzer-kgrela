@@ -59,8 +59,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
                 u'name': u'Rando M.',
                 u'user_id': u'10'
             }
-            ]
-        )
+        ])
 
     def test_users_view(self):
         """Test user view"""
@@ -308,14 +307,13 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertDictEqual(data, {
             '10': {
                 u'avatar': u'https://intranet.stxnext.pl/api/images/users/165',
-                u'name': 'Rando M.'
-                },
+                u'name': 'Rando M.',
+            },
             '11': {
                 u'avatar': u'https://intranet.stxnext.pl/api/images/users/151',
-                u'name': 'Not F.'
-                }
+                u'name': 'Not F.',
             }
-        )
+        })
 
 
 def suite():
