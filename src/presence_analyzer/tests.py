@@ -164,7 +164,8 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
                 "unique": "Presence mean time by weekday"
             }, {
                 'url': "/presence_start_end.html",
-                "unique": "Presence start-end weekday"}
+                "unique": "Presence start-end weekday"
+            }
         ]
         for data in data_list:
             result = self.client.get(data['url'])
@@ -194,7 +195,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         main.app.config.update({
             'DATA_CSV': TEST_DATA_CSV,
             'DATA_XML': TEST_DATA_XML,
-            })
+        })
 
     def tearDown(self):
         """Get rid of unused objects after each test."""

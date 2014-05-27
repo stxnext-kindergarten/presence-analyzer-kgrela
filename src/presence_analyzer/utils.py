@@ -114,9 +114,10 @@ def get_users_data():
         u'host': unicode(config.findtext('host'))
     }
     address = '{0}://{1}'.format(server['protocol'], server[u'host'])
-    return {user.get('id'): {
-        u'name': user.findtext(u'name'),
-        u'avatar': address+user.findtext(u'avatar')
+    return {
+        user.get('id'): {
+            u'name': user.findtext(u'name'),
+            u'avatar': '{0}{1}'.format(address, user.findtext(u'avatar'))
         }
         for user in root[1]
     }
