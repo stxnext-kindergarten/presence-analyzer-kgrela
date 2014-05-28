@@ -34,7 +34,7 @@ def mainpage():
     """Redirects to front page."""
     return redirect(
         url_for('template_render', template_name="presence_weekday.html")
-        )
+    )
 
 
 @app.route('/api/v1/users', methods=['GET'])
@@ -65,7 +65,8 @@ def mean_time_weekday_view(user_id):
 
     weekdays = group_by_weekday(data[user_id])
     result = [(calendar.day_abbr[weekday], mean(intervals))
-              for weekday, intervals in weekdays.items()]
+              for weekday, intervals in weekdays.items()
+              ]
 
     return result
 
@@ -84,6 +85,7 @@ def presence_weekday_view(user_id):
               for weekday, intervals in weekdays.items()
               ]
     result.insert(0, ('Weekday', 'Presence (s)'))
+
     return result
 
 
@@ -100,7 +102,8 @@ def presence_start_end_view(user_id):
     result = [
         (calendar.day_abbr[weekday], mean(times['start']), mean(times['end']))
         for weekday, times in weekdays.items()
-        ]
+    ]
+
     return result
 
 
