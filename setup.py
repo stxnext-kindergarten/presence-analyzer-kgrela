@@ -28,10 +28,12 @@ setup(
         'setuptools',
         'Flask',
         'Flask-Mako',
+        'lxml',
     ],
     entry_points="""
     [console_scripts]
     flask-ctl = presence_analyzer.script:run
+    update = presence_analyzer.script:make_update
 
     [paste.app_factory]
     main = presence_analyzer.script:make_app

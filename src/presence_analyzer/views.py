@@ -16,6 +16,7 @@ from presence_analyzer.utils import (
     mean,
     group_by_weekday,
     group_by_start_end,
+    get_users_data,
 )
 
 import logging
@@ -33,16 +34,24 @@ def mainpage():
     """Redirects to front page."""
     return redirect(
         url_for('template_render', template_name="presence_weekday.html")
-        )
+    )
 
 
 @app.route('/api/v1/users', methods=['GET'])
 @jsonify
 def users_view():
     """Users listing for dropdown."""
-    data = get_data()
-    return [{'user_id': i, 'name': 'User {0}'.format(str(i))}
-            for i in data.keys()]
+    data = get_users_data()
+    result = [
+        {
+            'user_id': user,
+            'name': user_data['name'],
+            'avatar': user_data['avatar']
+        }
+        for user, user_data in data.iteritems()
+    ]
+
+    return result
 
 
 @app.route('/api/v1/mean_time_weekday/<int:user_id>', methods=['GET'])
@@ -56,7 +65,8 @@ def mean_time_weekday_view(user_id):
 
     weekdays = group_by_weekday(data[user_id])
     result = [(calendar.day_abbr[weekday], mean(intervals))
-              for weekday, intervals in weekdays.items()]
+              for weekday, intervals in weekdays.items()
+              ]
 
     return result
 
@@ -72,9 +82,10 @@ def presence_weekday_view(user_id):
 
     weekdays = group_by_weekday(data[user_id])
     result = [(calendar.day_abbr[weekday], sum(intervals))
-              for weekday, intervals in weekdays.items()]
-
+              for weekday, intervals in weekdays.items()
+              ]
     result.insert(0, ('Weekday', 'Presence (s)'))
+
     return result
 
 
@@ -91,11 +102,12 @@ def presence_start_end_view(user_id):
     result = [
         (calendar.day_abbr[weekday], mean(times['start']), mean(times['end']))
         for weekday, times in weekdays.items()
-        ]
+    ]
+
     return result
 
 
-@app.route('/<template_name>')
+@app.route('/<template_name>', methods=['GET'])
 def template_render(template_name):
     """Create HTML document from template"""
     try:

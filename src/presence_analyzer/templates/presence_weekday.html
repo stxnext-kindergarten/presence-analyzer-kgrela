@@ -9,10 +9,12 @@
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
+                var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
+                        users[this.user_id]=this.avatar;
                     });
                     dropdown.show();
                     loading.hide();
@@ -20,16 +22,22 @@
                 $('#user_id').change(function(){
                     var selected_user = $("#user_id").val();
                     var chart_div = $('#chart_div');
+                    var avatar_div = $("#avatar_div");
                     if(selected_user) {
                         loading.show();
+                        avatar_div.hide();
                         chart_div.hide();
+                        $("#avatar").attr("src", users[selected_user]);
                         $.getJSON("${url_for('presence_weekday_view', user_id='0')}"+selected_user, function(result) {
                             var data = google.visualization.arrayToDataTable(result);
                             var options = {};
                             chart_div.show();
+
                             loading.hide();
                             var chart = new google.visualization.PieChart(chart_div[0]);
+                            document.images['avatar'].style.display="inline";
                             chart.draw(data, options);
+                            avatar_div.show();
                         });
                     }
                 });

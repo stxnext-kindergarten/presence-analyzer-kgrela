@@ -1,0 +1,17 @@
+<intranet>
+<server>
+<host>intranet.stxnext.pl</host>
+<port>443</port>
+<protocol>https</protocol>
+</server>
+<users>
+<user id="10">
+<name>Rando M.</name>
+<avatar>/api/images/users/165</avatar>
+</user>
+<user id="11">
+<name>Not F.</name>
+<avatar>/api/images/users/151</avatar>
+</user>
+</users>
+</intranet>
