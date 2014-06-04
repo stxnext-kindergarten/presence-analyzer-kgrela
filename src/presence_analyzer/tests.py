@@ -195,6 +195,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             'DATA_CSV': TEST_DATA_CSV,
             'DATA_XML': TEST_DATA_XML,
         })
+        utils.cache_data = {}
 
     def tearDown(self):
         """Get rid of unused objects after each test."""
@@ -314,6 +315,19 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
                 u'name': 'Not F.',
             }
         })
+
+    def test_cache(self):
+        """ Test cache decorator"""
+        data = [1, 2, 3, 4, 5]
+
+        @utils.cache("decorated function", 600)
+        def decorated_function():
+            return data
+
+        for i in xrange(5):
+            result = decorated_function()
+            self.assertEqual(result, data)
+        self.assertIn("decorated function", utils.cache_data)
 
 
 def suite():

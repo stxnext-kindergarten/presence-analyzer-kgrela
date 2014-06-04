@@ -4,7 +4,11 @@
 import csv
 from json import dumps
 from functools import wraps
-from datetime import datetime
+from datetime import (
+    datetime,
+    timedelta,
+)
+import thread
 
 from flask import Response
 from lxml import etree
@@ -13,6 +17,8 @@ from presence_analyzer.main import app
 
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
+
+cache_data = {}
 
 
 def jsonify(function):
@@ -27,6 +33,39 @@ def jsonify(function):
     return inner
 
 
+def locker(function):
+    """Lock given function."""
+    locker.lock = thread.allocate_lock()
+
+    @wraps(function)
+    def locker_handler(*args, **kwds):
+        """Wait if function is locked."""
+        with locker.lock:
+            result = function(*args, **kwds)
+            return result
+    return locker_handler
+
+
+def cache(name, time):
+    """Store result of funtion for given time."""
+    def cache_function(function):
+        """Get function for cache handler"""
+        @wraps(function)
+        def cache_handler(*args, **kwds):
+            """Return value from cache. If value doesn't exist load it."""
+            if name not in cache_data.keys() or\
+                    cache_data[name]['time'] < datetime.now():
+                cache_data[name] = {
+                    'result': function(*args, **kwds),
+                    'time': datetime.now() + timedelta(seconds=time)
+                }
+            return cache_data[name]['result']
+        return cache_handler
+    return cache_function
+
+
+@locker
+@cache("get_data", 600)
 def get_data():
     """Extracts presence data from CSV file and groups it by user_id.
 
