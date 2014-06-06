@@ -19,6 +19,11 @@ TEST_DATA_XML = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.xml'
 )
 
+TEST_CASHED_DATA = os.path.join(
+    os.path.dirname(__file__), '..', '..',
+    'runtime', 'data', 'test_cache_data.csv'
+)
+
 
 # pylint: disable=E1103
 class PresenceAnalyzerViewsTestCase(unittest.TestCase):
@@ -327,7 +332,40 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         for i in xrange(5):
             result = decorated_function()
             self.assertEqual(result, data)
+            utils.get_data()
         self.assertIn("decorated function", utils.cache_data)
+
+        utils.get_data()
+        data = utils.cache_data['get_data']['result']
+        self.assertIsInstance(data, dict)
+        self.assertItemsEqual(data.keys(), [10, 11])
+        sample_date = datetime.date(2013, 9, 10)
+        self.assertIn(sample_date, data[10])
+        self.assertItemsEqual(data[10][sample_date].keys(), ['start', 'end'])
+        self.assertEqual(data[10][sample_date]['start'],
+                         datetime.time(9, 39, 5))
+
+        main.app.config.update({'DATA_CSV': TEST_CASHED_DATA})
+
+        data = utils.get_data()
+        self.assertIsInstance(data, dict)
+        self.assertItemsEqual(data.keys(), [10, 11])
+        sample_date = datetime.date(2013, 9, 10)
+        self.assertIn(sample_date, data[10])
+        self.assertItemsEqual(data[10][sample_date].keys(), ['start', 'end'])
+        self.assertEqual(data[10][sample_date]['start'],
+                         datetime.time(9, 39, 5))
+
+        utils.cache_data = {}
+        data = utils.get_data()
+        self.assertEqual(data, {
+            10: {
+                datetime.date(2013, 9, 10): {
+                    'end': datetime.time(17, 59, 52),
+                    'start': datetime.time(9, 39, 5)
+                }
+            }
+        })
 
 
 def suite():
