@@ -19,7 +19,7 @@ TEST_DATA_XML = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.xml'
 )
 
-TEST_CASHED_DATA = os.path.join(
+TEST_CACHED_DATA = os.path.join(
     os.path.dirname(__file__), '..', '..',
     'runtime', 'data', 'test_cache_data.csv'
 )
@@ -345,7 +345,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(data[10][sample_date]['start'],
                          datetime.time(9, 39, 5))
 
-        main.app.config.update({'DATA_CSV': TEST_CASHED_DATA})
+        main.app.config.update({'DATA_CSV': TEST_CACHED_DATA})
 
         data = utils.get_data()
         self.assertIsInstance(data, dict)
