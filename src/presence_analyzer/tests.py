@@ -200,7 +200,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             'DATA_CSV': TEST_DATA_CSV,
             'DATA_XML': TEST_DATA_XML,
         })
-        utils.cache_data = {}
+        utils.CACHE_DATA = {}
 
     def tearDown(self):
         """Get rid of unused objects after each test."""
@@ -333,10 +333,10 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             result = decorated_function()
             self.assertEqual(result, data)
             utils.get_data()
-        self.assertIn("decorated function", utils.cache_data)
+        self.assertIn("decorated function", utils.CACHE_DATA)
 
         utils.get_data()
-        data = utils.cache_data['get_data']['result']
+        data = utils.CACHE_DATA['get_data']['result']
         self.assertIsInstance(data, dict)
         self.assertItemsEqual(data.keys(), [10, 11])
         sample_date = datetime.date(2013, 9, 10)
@@ -347,7 +347,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
 
         main.app.config.update({'DATA_CSV': TEST_CACHED_DATA})
 
-        data = utils.get_data()
+        data = utils.CACHE_DATA['get_data']['result']
         self.assertIsInstance(data, dict)
         self.assertItemsEqual(data.keys(), [10, 11])
         sample_date = datetime.date(2013, 9, 10)
@@ -356,7 +356,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertEqual(data[10][sample_date]['start'],
                          datetime.time(9, 39, 5))
 
-        utils.cache_data = {}
+        utils.CACHE_DATA = {}
         data = utils.get_data()
         self.assertEqual(data, {
             10: {
@@ -376,5 +376,5 @@ def suite():
     return suite
 
 
-if __name__ == '__main__':
+if __name__ == '__main__    ':
     unittest.main()

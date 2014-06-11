@@ -18,7 +18,7 @@ from presence_analyzer.main import app
 import logging
 log = logging.getLogger(__name__)  # pylint: disable-msg=C0103
 
-cache_data = {}
+CACHE_DATA = {}
 
 
 def jsonify(function):
@@ -35,12 +35,12 @@ def jsonify(function):
 
 def locker(function):
     """Lock given function."""
-    locker.lock = thread.allocate_lock()
+    function.__lock__ = thread.allocate_lock()
 
     @wraps(function)
     def locker_handler(*args, **kwds):
         """Wait if function is locked."""
-        with locker.lock:
+        with function.__lock__:
             result = function(*args, **kwds)
             return result
     return locker_handler
@@ -53,13 +53,13 @@ def cache(name, time):
         @wraps(function)
         def cache_handler(*args, **kwds):
             """Return value from cache. If value doesn't exist load it."""
-            if name not in cache_data.keys() or\
-                    cache_data[name]['time'] < datetime.now():
-                cache_data[name] = {
+            if name not in CACHE_DATA.keys() or\
+                    CACHE_DATA[name]['time'] < datetime.now():
+                CACHE_DATA[name] = {
                     'result': function(*args, **kwds),
                     'time': datetime.now() + timedelta(seconds=time)
                 }
-            return cache_data[name]['result']
+            return CACHE_DATA[name]['result']
         return cache_handler
     return cache_function
 
