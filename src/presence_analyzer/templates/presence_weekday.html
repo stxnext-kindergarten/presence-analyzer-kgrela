@@ -5,7 +5,6 @@
 <%block name="own_scripts">
     <script type="text/javascript">
         google.load("visualization", "1", {packages:["corechart"], 'language': 'en'});
-
         (function($) {
             $(document).ready(function(){
                 var loading = $('#loading');
@@ -14,7 +13,7 @@
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
-                        users[this.user_id]=this.avatar;
+                        users[this.user_id] = this.avatar;
                     });
                     dropdown.show();
                     loading.hide();

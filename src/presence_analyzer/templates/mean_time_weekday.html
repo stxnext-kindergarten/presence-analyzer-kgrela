@@ -10,11 +10,10 @@
                 var loading = $('#loading');
                 var users = {};
                 $.getJSON("${ url_for('users_view') }", function(result) {
-                    users = result;
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
-                        users[this.user_id]=this.avatar;
+                        users[this.user_id] = this.avatar;
                     });
                     dropdown.show();
                     loading.hide();
