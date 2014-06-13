@@ -51,6 +51,7 @@ def users_view():
         for user, user_data in data.iteritems()
     ]
 
+    result = sorted(result, key=lambda k: k['name'])
     return result
 
 
