@@ -82,8 +82,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             [u'Fri', 6426.0],
             [u'Sat', 0],
             [u'Sun', 0]
-            ]
-            )
+        ])
 
     def test_mean_time_weekday_view(self):
         """Test view of mean time for user"""
@@ -101,8 +100,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             [u'Fri', 6426.0],
             [u'Sat', 0],
             [u'Sun', 0]
-            ],
-            )
+        ])
 
     def test_presence_weekday_view(self):
         """Test view of weekday time for user"""
@@ -120,8 +118,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             [u'Fri', 6426.0],
             [u'Sat', 0],
             [u'Sun', 0]
-            ],
-            )
+        ])
 
     def test_presence_start_end_view(self):
         """Test view of start-end time for user"""
@@ -138,8 +135,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             [u'Fri', 47816.0, 54242.0],
             [u'Sat', 0, 0],
             [u'Sun', 0, 0]
-            ]
-            )
+        ])
 
         result = self.client.get('/api/v1/presence_start_end/10')
         self.assertIsNotNone(result)
@@ -154,8 +150,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
             [u'Fri', 0, 0],
             [u'Sat', 0, 0],
             [u'Sun', 0, 0]
-            ]
-            )
+        ])
 
     def test_template_render(self):
         """Test rendering templates"""
@@ -244,8 +239,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             4: [],
             5: [],
             6: [],
-            }
-            )
+        })
 
         self.assertEqual(len(result[3]), 1)
 
@@ -265,8 +259,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             4: {'start': [47816], 'end': [54242]},
             5: {'start': [], 'end': []},
             6: {'start': [], 'end': []}
-            }
-            )
+        })
 
         result = utils.group_by_start_end(data[10])
         self.assertIsNotNone(result)
@@ -280,8 +273,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
             4: {'start': [], 'end': []},
             5: {'start': [], 'end': []},
             6: {'start': [], 'end': []}
-            }
-            )
+        })
 
     def test_seconds_since_midnight(self):
         """Test calculated amount of seconds since midnight"""
@@ -327,6 +319,7 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
 
         @utils.cache("decorated function", 600)
         def decorated_function():
+            """Helper function for testing decorator"""
             return data
 
         for i in xrange(5):
