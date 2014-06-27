@@ -19,10 +19,10 @@
                     loading.hide();
                 });
                 $('#user_id').change(function(){
-                    var selected_user = $("#user_id").val();
-                    var chart_div = $('#chart_div');
-                    var avatar_div = $('#avatar_div');
-                    var no_data_div = $('#no_data_div');
+                    var selected_user = $("#user_id").val(),
+                        chart_div = $('#chart_div'),
+                        avatar_div = $('#avatar_div'),
+                        no_data_div = $('#no_data_div');
                     if(selected_user) {
                         document.images['avatar'].style.display="none";
                         loading.show();
@@ -30,7 +30,7 @@
                         avatar_div.hide();
                         $("#avatar").attr("src", users[selected_user]);
                         $.getJSON("${ url_for("presence_start_end_view", user_id="0") }" + selected_user, function(result) {
-                            document.images['avatar'].style.display="inline";
+                            document.images['avatar'].style.display = "inline";
                             avatar_div.show();
 
                             $.each(result, function(index, value) {
@@ -54,8 +54,7 @@
                                 chart_div.show();
                                 var chart = new google.visualization.Timeline(chart_div[0]);
                                 chart.draw(data, options);
-                            }
-                            else{
+                            } else {
                                 no_data_div.show();
                             }
                             loading.hide();

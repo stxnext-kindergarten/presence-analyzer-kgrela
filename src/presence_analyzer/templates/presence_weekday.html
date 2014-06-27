@@ -19,17 +19,17 @@
                     loading.hide();
                 });
                 $('#user_id').change(function(){
-                    var selected_user = $("#user_id").val();
-                    var chart_div = $('#chart_div');
-                    var avatar_div = $('#avatar_div');
-                    var no_data_div = $('#no_data_div');
+                    var selected_user = $("#user_id").val(),
+                        chart_div = $('#chart_div'),
+                        avatar_div = $('#avatar_div'),
+                        no_data_div = $('#no_data_div');
                     if(selected_user) {
                         loading.show();
                         avatar_div.hide();
                         chart_div.hide();
                         $("#avatar").attr("src", users[selected_user]);
                         $.getJSON("${url_for('presence_weekday_view', user_id='0')}"+selected_user, function(result) {
-                            document.images['avatar'].style.display="inline";
+                            document.images['avatar'].style.display = "inline";
                             avatar_div.show();
 
                             if(result.length>0){
@@ -39,8 +39,7 @@
                                 chart_div.show();
                                 var chart = new google.visualization.PieChart(chart_div[0]);
                                 chart.draw(data, options); 
-                            }
-                            else{
+                            } else {
                                 no_data_div.show();
                             }
                             loading.hide();
