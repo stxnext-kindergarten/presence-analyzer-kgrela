@@ -2,6 +2,7 @@
 """Defines views."""
 
 import calendar
+import locale
 from flask import (
     url_for,
     redirect,
@@ -28,6 +29,8 @@ TEMPLATE_LIST = (
     'presence_start_end.html'
 )
 
+locale.setlocale(locale.LC_ALL, '')
+
 
 @app.route('/')
 def mainpage():
@@ -51,7 +54,7 @@ def users_view():
         for user, user_data in data.iteritems()
     ]
 
-    result = sorted(result, key=lambda k: k['name'])
+    result = sorted(result, key=lambda k: k['name'], cmp=locale.strcoll)
     return result
 
 
