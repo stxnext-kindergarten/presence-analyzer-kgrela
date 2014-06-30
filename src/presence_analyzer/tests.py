@@ -9,7 +9,7 @@ from presence_analyzer import (
     main,
     views,
     utils,
-    )
+)
 
 TEST_DATA_CSV = os.path.join(
     os.path.dirname(__file__), '..', '..', 'runtime', 'data', 'test_data.csv'
@@ -34,7 +34,7 @@ class PresenceAnalyzerViewsTestCase(unittest.TestCase):
         main.app.config.update({
             'DATA_CSV': TEST_DATA_CSV,
             'DATA_XML': TEST_DATA_XML,
-            })
+        })
         self.client = main.app.test_client()
 
     def tearDown(self):
@@ -221,21 +221,15 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         self.assertIsInstance(result[2], list)
         self.assertDictEqual(result, {
             0: [],
-            1: [utils.interval
-                (data[10][datetime.date(2013, 9, 10)]['start'],
-                 data[10][datetime.date(2013, 9, 10)]['end']
-                 )
-                ],
-            2: [utils.interval
-                (data[10][datetime.date(2013, 9, 11)]['start'],
-                 data[10][datetime.date(2013, 9, 11)]['end']
-                 )
-                ],
-            3: [utils.interval
-                (data[10][datetime.date(2013, 9, 12)]['start'],
-                 data[10][datetime.date(2013, 9, 12)]['end']
-                 )
-                ],
+            1: [utils.interval(
+                data[10][datetime.date(2013, 9, 10)]['start'],
+                data[10][datetime.date(2013, 9, 10)]['end'])],
+            2: [utils.interval(
+                data[10][datetime.date(2013, 9, 11)]['start'],
+                data[10][datetime.date(2013, 9, 11)]['end'])],
+            3: [utils.interval(
+                data[10][datetime.date(2013, 9, 12)]['start'],
+                data[10][datetime.date(2013, 9, 12)]['end'])],
             4: [],
             5: [],
             6: [],
