@@ -13,7 +13,7 @@
                     var dropdown = $("#user_id");
                     $.each(result, function(item) {
                         dropdown.append($("<option />").val(this.user_id).text(this.name));
-                        users[this.user_id] = this.avatar;
+                        users[this.user_id] = [this.avatar, this.name];
                     });
                     dropdown.show();
                     loading.hide();
@@ -29,7 +29,7 @@
                         chart_div.hide();
                         avatar_div.hide();
                         no_data_div.hide();
-                        $("#avatar").attr("src", users[selected_user]);
+                        $("#avatar").attr("src", users[selected_user][0]);
                         $.getJSON("${ url_for("mean_time_weekday_view", user_id="0") }"+selected_user, function(result) {
                             document.images['avatar'].style.display = "inline";
                             avatar_div.show();
@@ -53,6 +53,7 @@
                                 var chart = new google.visualization.ColumnChart(chart_div[0]);
                                 chart.draw(data, options);
                             } else {
+                                no_data_div.text("No data for user: "+users[selected_user][1]);
                                 no_data_div.show();
                             }
                             loading.hide();
