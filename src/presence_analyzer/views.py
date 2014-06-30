@@ -29,7 +29,7 @@ TEMPLATE_LIST = (
     'presence_start_end.html'
 )
 
-locale.setlocale(locale.LC_ALL, '')
+locale.setlocale(locale.LC_ALL, 'en_US')
 
 
 @app.route('/')
