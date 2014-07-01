@@ -23,13 +23,13 @@
                     var chart_div = $('#chart_div');
                     var avatar_div = $("#avatar_div");
                     if(selected_user) {
-                        document.images['avatar'].src= users[selected_user];
+                        document.images['avatar'].style.display="none";
+                        loading.show();
                         chart_div.hide();
                         avatar_div.hide();
                         $("#avatar").attr("src", users[selected_user]);
                         $.getJSON("${ url_for("presence_start_end_view", user_id="0") }" + selected_user, function(result) {
-                            document.images['avatar'].style.display="inline";
-                            avatar_div.show();
+                            document.images['avatar'].src= users[selected_user];
 
                             $.each(result, function(index, value) {
                                 value[1] = parseInterval(value[1]);
