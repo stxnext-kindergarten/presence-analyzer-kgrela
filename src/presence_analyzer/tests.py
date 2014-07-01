@@ -308,12 +308,12 @@ class PresenceAnalyzerUtilsTestCase(unittest.TestCase):
         })
 
     def test_cache(self):
-        """ Test cache decorator"""
+        """Test cache decorator."""
         data = [1, 2, 3, 4, 5]
 
         @utils.cache("decorated function", 600)
         def decorated_function():
-            """Helper function for testing decorator"""
+            """Function used to test cache decorator."""
             return data
 
         for i in xrange(5):
