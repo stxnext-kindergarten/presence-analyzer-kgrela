@@ -23,8 +23,7 @@
                     var chart_div = $('#chart_div');
                     var avatar_div = $("#avatar_div");
                     if(selected_user) {
-                        document.images['avatar'].style.display="none";
-                        loading.show();
+                        document.images['avatar'].src= users[selected_user];
                         chart_div.hide();
                         avatar_div.hide();
                         $("#avatar").attr("src", users[selected_user]);
